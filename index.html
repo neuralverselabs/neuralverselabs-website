@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>NeuralVerse Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05071a;--bg2:#0a0d2e;--bg3:#0d1035;
+  --card:#0f1340;--card2:#111540;
+  --blue:#3b82f6;--blue2:#6366f1;--cyan:#22d3ee;
+  --text:#e2e8f0;--muted:#94a3b8;--border:rgba(99,102,241,0.2);
+  --grad:linear-gradient(135deg,#3b82f6,#6366f1,#8b5cf6)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(5,7,26,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-size:1.2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.875rem;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--grad);border:none;color:#fff;padding:.5rem 1.25rem;border-radius:8px;font-size:.875rem;font-weight:500;cursor:pointer;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(99,102,241,0.15),transparent),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(59,130,246,0.1),transparent);pointer-events:none}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(99,102,241,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.05) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;color:#a5b4fc;margin-bottom:2rem}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:#6366f1;display:inline-block}
+h1.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem;letter-spacing:-0.02em}
+.hero-title .grad{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:620px;margin:0 auto 2.5rem}
+.hero-btns{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+.btn-primary{background:var(--grad);border:none;color:#fff;padding:.8rem 2rem;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:transform .2s,opacity .2s}
+.btn-primary:hover{transform:translateY(-2px);opacity:.9}
+.btn-outline{background:transparent;border:1px solid rgba(99,102,241,0.5);color:#a5b4fc;padding:.8rem 2rem;border-radius:10px;font-size:.95rem;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-outline:hover{background:rgba(99,102,241,0.1);border-color:#6366f1}
+
+/* HERO STATS */
+.hero-stats{display:flex;gap:2rem;margin-top:4rem;flex-wrap:wrap;justify-content:center}
+.stat{text-align:center;background:rgba(99,102,241,0.08);border:1px solid var(--border);border-radius:14px;padding:1rem 1.5rem;min-width:140px}
+.stat-icon{font-size:1.4rem;margin-bottom:.35rem}
+.stat-lbl{font-size:.82rem;color:var(--muted);font-weight:500}
+
+section{padding:5rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.section-tag{display:inline-block;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);border-radius:100px;padding:.25rem .85rem;font-size:.75rem;color:#a5b4fc;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.08em}
+.section-title{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin-bottom:.75rem;letter-spacing:-0.01em}
+.section-sub{color:var(--muted);max-width:560px;margin-bottom:3rem}
+.text-center{text-align:center}
+.text-center .section-sub{margin-left:auto;margin-right:auto}
+
+/* ABOUT */
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.about-text p{color:var(--muted);margin-bottom:1rem}
+.about-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.pill{background:rgba(99,102,241,0.12);border:1px solid var(--border);border-radius:100px;padding:.3rem .85rem;font-size:.8rem;color:#a5b4fc}
+.about-visual{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;display:flex;flex-direction:column;gap:1rem}
+.av-item{display:flex;align-items:center;gap:.85rem;padding:.75rem;background:var(--card2);border-radius:12px;border:1px solid var(--border)}
+.av-icon{width:40px;height:40px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.av-label{font-size:.9rem;font-weight:500}
+.av-sub{font-size:.75rem;color:var(--muted)}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem}
+.service-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:border-color .25s,transform .25s}
+.service-card:hover{border-color:rgba(99,102,241,0.5);transform:translateY(-4px)}
+.sc-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+.sc-blue{background:rgba(59,130,246,0.15)}
+.sc-purple{background:rgba(139,92,246,0.15)}
+.sc-cyan{background:rgba(34,211,238,0.15)}
+.sc-indigo{background:rgba(99,102,241,0.15)}
+.service-card h3{font-size:1rem;font-weight:600;margin-bottom:.75rem}
+.service-card ul{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.service-card li{font-size:.82rem;color:var(--muted);padding-left:1rem;position:relative}
+.service-card li::before{content:"→";position:absolute;left:0;color:#6366f1;font-size:.75rem}
+
+/* FEATURED */
+.featured-inner{background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(59,130,246,0.08));border:1px solid rgba(99,102,241,0.3);border-radius:24px;padding:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.feat-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);border-radius:100px;padding:.3rem .85rem;font-size:.75rem;color:#a5b4fc;margin-bottom:1rem}
+.feat-badge span{width:6px;height:6px;border-radius:50%;background:#6366f1;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.feat-title{font-size:2rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-0.01em}
+.feat-sub{color:var(--muted);margin-bottom:1.5rem}
+.feat-features{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.5rem}
+.feat-feat{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--muted)}
+.feat-feat::before{content:"✓";color:#22d3ee;font-weight:700}
+.feat-benefits{display:flex;flex-direction:column;gap:.85rem}
+.benefit-item{display:flex;align-items:flex-start;gap:1rem;background:rgba(5,7,26,0.5);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.bi-icon{width:36px;height:36px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.bi-text strong{display:block;font-size:.88rem;font-weight:600;margin-bottom:.15rem}
+.bi-text span{font-size:.78rem;color:var(--muted)}
+
+/* SCREENSHOTS */
+.screenshots-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-top:2.5rem}
+.screenshot-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .25s,border-color .25s}
+.screenshot-card:hover{transform:translateY(-4px);border-color:rgba(99,102,241,0.5)}
+.screenshot-mock{height:150px;display:flex;flex-direction:column;padding:1rem;gap:.5rem;position:relative;overflow:hidden}
+.sm-dashboard{background:linear-gradient(135deg,#0d1035,#111540)}
+.sm-chat{background:linear-gradient(135deg,#071230,#0d1a40)}
+.sm-kb{background:linear-gradient(135deg,#0a1028,#101535)}
+.sm-crm{background:linear-gradient(135deg,#0c1132,#12163a)}
+.sm-topbar{height:8px;border-radius:4px;background:rgba(99,102,241,0.4);width:60%}
+.sm-row{height:6px;border-radius:3px;background:rgba(255,255,255,0.06)}
+.sm-row.w80{width:80%}.sm-row.w60{width:60%}.sm-row.w70{width:70%}.sm-row.w50{width:50%}.sm-row.w40{width:40%}
+.sm-card-mini{background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.2);border-radius:6px;padding:.4rem .5rem;display:flex;gap:.4rem;align-items:center}
+.sm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sm-dot.blue{background:#3b82f6}.sm-dot.green{background:#22d3ee}.sm-dot.purple{background:#8b5cf6}.sm-dot.orange{background:#f59e0b}
+.sm-line{height:5px;border-radius:3px;background:rgba(255,255,255,0.1);flex:1}
+.sm-bubble{background:rgba(99,102,241,0.2);border-radius:8px 8px 8px 2px;padding:.3rem .5rem;font-size:.6rem;color:#a5b4fc;max-width:80%}
+.sm-bubble.right{background:rgba(34,211,238,0.15);border-radius:8px 8px 2px 8px;align-self:flex-end;color:#67e8f9}
+.sm-chat-inner{display:flex;flex-direction:column;gap:.4rem}
+.sm-stat{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.2);border-radius:6px;padding:.35rem .5rem}
+.sm-stat-num{font-size:.7rem;font-weight:700;color:#60a5fa}
+.sm-stat-lbl{font-size:.55rem;color:var(--muted)}
+.sm-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.screenshot-label{padding:.75rem 1rem;font-size:.82rem;font-weight:600;border-top:1px solid var(--border)}
+.screenshot-sub{font-size:.72rem;color:var(--muted);padding:0 1rem .75rem}
+
+/* CASE STUDY */
+.case-inner{background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(99,102,241,0.1));border:1px solid rgba(34,211,238,0.2);border-radius:24px;padding:3rem}
+.case-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;margin-top:2rem}
+.case-block{background:rgba(5,7,26,0.5);border:1px solid var(--border);border-radius:14px;padding:1.5rem}
+.case-block h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:#a5b4fc;margin-bottom:.75rem}
+.case-block p{font-size:.875rem;color:var(--muted)}
+.case-impact{display:flex;flex-direction:column;gap:.5rem}
+.impact-item{display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--muted)}
+.impact-item::before{content:"✦";color:#22d3ee;font-size:.7rem}
+
+/* SOLUTIONS */
+.solutions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+.sol-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:border-color .25s,transform .25s}
+.sol-card:hover{border-color:rgba(99,102,241,0.5);transform:translateY(-4px)}
+.sol-num{font-size:.75rem;color:#6366f1;font-weight:600;margin-bottom:.5rem}
+.sol-card h3{font-size:1rem;font-weight:600;margin-bottom:.5rem}
+.sol-card p{font-size:.82rem;color:var(--muted);margin-bottom:1rem}
+.sol-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.sol-tag{background:rgba(99,102,241,0.1);border:1px solid var(--border);border-radius:6px;padding:.2rem .55rem;font-size:.72rem;color:#a5b4fc}
+.sol-industries{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.ind-tag-sm{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);border-radius:6px;padding:.2rem .55rem;font-size:.72rem;color:#67e8f9}
+
+/* COMING SOON */
+.coming-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-top:2rem}
+.coming-card{background:var(--card);border:1px dashed rgba(99,102,241,0.3);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden}
+.coming-badge{position:absolute;top:1rem;right:1rem;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);border-radius:100px;padding:.15rem .6rem;font-size:.65rem;color:#fbbf24}
+.coming-card h3{font-size:.95rem;font-weight:600;margin-bottom:.3rem}
+.coming-card p{font-size:.78rem;color:var(--muted)}
+
+/* INDUSTRIES */
+.industries-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem}
+.ind-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;transition:all .25s;cursor:default}
+.ind-card:hover{border-color:rgba(99,102,241,0.5);background:var(--card2)}
+.ind-card .emoji{font-size:2rem;margin-bottom:.75rem;display:block}
+.ind-card span{font-size:.875rem;font-weight:500}
+
+/* WHY */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem}
+.why-num{font-size:2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.75rem}
+.why-card h3{font-size:.95rem;font-weight:600;margin-bottom:.5rem}
+.why-card p{font-size:.82rem;color:var(--muted)}
+
+/* PROCESS */
+.process-track{display:flex;gap:0;position:relative;overflow-x:auto;padding-bottom:1rem}
+.process-track::before{content:"";position:absolute;top:28px;left:28px;right:28px;height:2px;background:linear-gradient(90deg,#3b82f6,#6366f1,#8b5cf6);z-index:0}
+.proc-step{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;min-width:140px;position:relative;z-index:1;padding:0 .5rem}
+.proc-circle{width:56px;height:56px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:1rem;border:3px solid var(--bg)}
+.proc-title{font-size:.9rem;font-weight:600;margin-bottom:.35rem}
+.proc-desc{font-size:.78rem;color:var(--muted)}
+
+/* TECH STACK */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
+.tech-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem}
+.tech-card-icon{font-size:1.5rem;margin-bottom:.75rem}
+.tech-card h3{font-size:.9rem;font-weight:600;margin-bottom:.85rem;color:#a5b4fc;text-transform:uppercase;letter-spacing:.06em}
+.tech-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.tech-chip{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.3rem .65rem;font-size:.78rem;color:var(--text)}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.75rem;max-width:900px;margin:0 auto}
+.founder-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;transition:border-color .25s,transform .25s}
+.founder-card:hover{border-color:rgba(99,102,241,0.5);transform:translateY(-4px)}
+.fc-top{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.25rem}
+.fc-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0;border:2px solid rgba(99,102,241,0.4)}
+.fc-name{font-size:1.1rem;font-weight:700;margin-bottom:.15rem}
+.fc-role{font-size:.78rem;color:#a5b4fc}
+.fc-bio{font-size:.85rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.7}
+.fc-expertise h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;margin-bottom:.6rem}
+.expertise-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.exp-chip{background:rgba(99,102,241,0.1);border:1px solid var(--border);border-radius:100px;padding:.2rem .65rem;font-size:.72rem;color:#a5b4fc}
+
+/* CONTACT */
+.contact-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:1.25rem}
+.ci-item{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem}
+.ci-icon{width:38px;height:38px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.ci-label{font-size:.75rem;color:var(--muted)}
+.ci-value{font-size:.88rem;font-weight:500}
+.ci-value a{color:var(--text);text-decoration:none}
+.ci-value a:hover{color:#a5b4fc}
+.contact-ctas{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(59,130,246,0.07));border:1px solid rgba(99,102,241,0.25);border-radius:20px;padding:2.5rem;display:flex;flex-direction:column;gap:1rem}
+.contact-ctas h3{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.contact-ctas p{font-size:.875rem;color:var(--muted);margin-bottom:.5rem}
+
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
+.footer-inner{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.footer-logo{font-size:1rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.footer-socials{display:flex;gap:1rem}
+.social-btn{display:flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.45rem .9rem;font-size:.8rem;color:var(--muted);text-decoration:none;transition:all .2s}
+.social-btn:hover{border-color:rgba(99,102,241,0.5);color:#fff}
+.footer-copy{font-size:.75rem;color:var(--muted)}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .about-inner,.featured-inner,.contact-wrapper,.case-grid{grid-template-columns:1fr;gap:1.5rem}
+  .feat-features{grid-template-columns:1fr}
+  .process-track{gap:0}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NeuralVerse Labs</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#engage">Product</a></li>
+    <li><a href="#solutions">Solutions</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Demo</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-lines"></div>
+  <div class="hero-badge"><span></span>AI Solutions for Modern Business</div>
+  <h1 class="hero-title">Build Smarter Businesses<br><span class="grad">with AI Automation</span></h1>
+  <p class="hero-sub">Helping businesses automate operations, improve customer engagement, and accelerate growth through AI-powered solutions.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Demo</button>
+    <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Schedule a Consultation</button>
+    <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Us</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-icon">⚡</div><div class="stat-lbl">AI Automation</div></div>
+    <div class="stat"><div class="stat-icon">🛠️</div><div class="stat-lbl">Custom Software</div></div>
+    <div class="stat"><div class="stat-icon">📊</div><div class="stat-lbl">Business Intelligence</div></div>
+    <div class="stat"><div class="stat-icon">💬</div><div class="stat-lbl">Customer Engagement</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--bg2)">
+  <div class="container">
+    <div class="about-inner reveal">
+      <div class="about-text">
+        <div class="section-tag">About Us</div>
+        <h2 class="section-title">Building AI Solutions That Deliver Business Results</h2>
+        <p>NeuralVerse Labs is an AI solutions company focused on helping businesses streamline operations, enhance customer experiences, and unlock growth through intelligent automation and custom software.</p>
+        <p>We combine AI, automation, and modern software development to create systems that reduce manual work, improve efficiency, and drive measurable outcomes.</p>
+        <div class="about-pills">
+          <span class="pill">AI Engineering</span><span class="pill">Automation</span>
+          <span class="pill">Custom Software</span><span class="pill">Business Intelligence</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="av-item"><div class="av-icon">⚡</div><div><div class="av-label">Rapid Automation</div><div class="av-sub">From manual to intelligent workflows</div></div></div>
+        <div class="av-item"><div class="av-icon">🤖</div><div><div class="av-label">AI-Powered Systems</div><div class="av-sub">Smart software that adapts and learns</div></div></div>
+        <div class="av-item"><div class="av-icon">📈</div><div><div class="av-label">Measurable Growth</div><div class="av-sub">Outcomes-focused, results-driven</div></div></div>
+        <div class="av-item"><div class="av-icon">🔧</div><div><div class="av-label">End-to-End Support</div><div class="av-sub">Strategy, build, deploy & maintain</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-tag">What We Do</div>
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-sub">Four core pillars of AI capability designed to transform your business operations.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="sc-icon sc-blue">⚡</div>
+        <h3>AI Automation</h3>
+        <ul><li>Workflow Automation</li><li>Lead Management Systems</li><li>CRM Automation</li><li>Email Automation</li><li>Business Process Automation</li></ul>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon sc-purple">💬</div>
+        <h3>AI Customer Engagement</h3>
+        <ul><li>AI Chatbots</li><li>Customer Support Assistants</li><li>Website Assistants</li><li>Lead Qualification Systems</li><li>Multilingual AI Agents</li></ul>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon sc-cyan">🛠️</div>
+        <h3>Custom AI Software</h3>
+        <ul><li>AI Dashboards</li><li>Internal Business Tools</li><li>Knowledge Management Systems</li><li>AI Analytics Platforms</li><li>Industry-Specific Solutions</li></ul>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon sc-indigo">🌐</div>
+        <h3>AI-Powered Websites</h3>
+        <ul><li>Business Websites</li><li>Landing Pages</li><li>AI-Integrated Experiences</li><li>Lead Generation Funnels</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCT -->
+<section id="engage" style="background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:2.5rem">
+      <div class="section-tag">Featured Product</div>
+      <h2 class="section-title">NeuralVerse Engage</h2>
+      <p class="section-sub">Our flagship AI customer engagement and lead management platform.</p>
+    </div>
+    <div class="featured-inner reveal">
+      <div>
+        <div class="feat-badge"><span></span>AI-Powered Platform</div>
+        <h3 class="feat-title">NeuralVerse<br>Engage</h3>
+        <p class="feat-sub">A complete AI-powered customer engagement and lead management solution built for modern businesses.</p>
+        <div class="feat-features">
+          <div class="feat-feat">AI Chat Assistant</div>
+          <div class="feat-feat">Lead Capture System</div>
+          <div class="feat-feat">Knowledge Base Mgmt</div>
+          <div class="feat-feat">Analytics Dashboard</div>
+          <div class="feat-feat">Lead CRM</div>
+          <div class="feat-feat">Widget Customization</div>
+          <div class="feat-feat">Multilingual Support</div>
+          <div class="feat-feat">Auto Follow-Up</div>
+        </div>
+        <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request a Demo</button>
+      </div>
+      <div class="feat-benefits">
+        <div class="benefit-item"><div class="bi-icon">⚡</div><div class="bi-text"><strong>Faster Customer Responses</strong><span>AI handles queries instantly, 24/7</span></div></div>
+        <div class="benefit-item"><div class="bi-icon">🎯</div><div class="bi-text"><strong>Automated Lead Collection</strong><span>Capture and qualify leads automatically</span></div></div>
+        <div class="benefit-item"><div class="bi-icon">🔻</div><div class="bi-text"><strong>Reduced Support Workload</strong><span>Free your team for higher-value work</span></div></div>
+        <div class="benefit-item"><div class="bi-icon">📈</div><div class="bi-text"><strong>Better Conversion Rates</strong><span>Engage visitors at the right moment</span></div></div>
+      </div>
+    </div>
+
+    <!-- SCREENSHOTS -->
+    <div class="text-center reveal" style="margin-top:3.5rem;margin-bottom:1.5rem">
+      <h3 style="font-size:1.1rem;font-weight:600;color:var(--muted)">Platform Screenshots</h3>
+    </div>
+    <div class="screenshots-grid reveal">
+
+      <!-- Dashboard -->
+      <div class="screenshot-card">
+        <div style="background:#f8f9fb;border-radius:12px 12px 0 0;overflow:hidden">
+          <svg viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <!-- sidebar -->
+            <rect width="90" height="280" fill="#1a1f36"/>
+            <rect x="10" y="14" width="28" height="28" rx="7" fill="#6366f1"/>
+            <text x="44" y="33" font-size="9" fill="white" font-family="Inter,sans-serif" font-weight="600">Aria Platform</text>
+            <rect x="8" y="56" width="74" height="22" rx="5" fill="#2d3561"/>
+            <text x="26" y="71" font-size="8" fill="white" font-family="Inter,sans-serif" font-weight="600">Dashboard</text>
+            <text x="22" y="95" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Knowledge Base</text>
+            <text x="22" y="113" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Chatbot Preview</text>
+            <text x="22" y="131" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Leads CRM</text>
+            <text x="22" y="149" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Customizer</text>
+            <text x="18" y="262" font-size="6" fill="#64748b" font-family="Inter,sans-serif">WORKSPACE</text>
+            <circle cx="18" cy="272" r="7" fill="#6366f1"/>
+            <text x="28" y="270" font-size="7" fill="white" font-family="Inter,sans-serif" font-weight="600">Nexus Solutions</text>
+            <text x="28" y="278" font-size="6" fill="#64748b" font-family="Inter,sans-serif">admin@nexus.io</text>
+            <!-- main -->
+            <rect x="90" width="330" height="280" fill="white"/>
+            <text x="105" y="22" font-size="11" fill="#1e293b" font-family="Inter,sans-serif" font-weight="700">Dashboard</text>
+            <text x="105" y="34" font-size="7" fill="#94a3b8" font-family="Inter,sans-serif">AI Customer Engagement Platform</text>
+            <!-- stat cards -->
+            <rect x="100" y="44" width="68" height="44" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="134" y="64" font-size="14" fill="#6366f1" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">374</text>
+            <text x="134" y="74" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Conversations</text>
+            <text x="134" y="83" font-size="5.5" fill="#22c55e" font-family="Inter,sans-serif" text-anchor="middle">+12% this week</text>
+            <rect x="176" y="44" width="68" height="44" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="210" y="64" font-size="14" fill="#6366f1" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">5</text>
+            <text x="210" y="74" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Leads Captured</text>
+            <text x="210" y="83" font-size="5.5" fill="#22c55e" font-family="Inter,sans-serif" text-anchor="middle">+8% this week</text>
+            <rect x="252" y="44" width="68" height="44" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="286" y="64" font-size="13" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">4.7/5</text>
+            <text x="286" y="74" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Avg Satisfaction</text>
+            <text x="286" y="83" font-size="5.5" fill="#22c55e" font-family="Inter,sans-serif" text-anchor="middle">+0.2 this week</text>
+            <rect x="328" y="44" width="68" height="44" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="362" y="64" font-size="14" fill="#22c55e" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">3</text>
+            <text x="362" y="74" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Active Chatbots</text>
+            <text x="362" y="83" font-size="5.5" fill="#22c55e" font-family="Inter,sans-serif" text-anchor="middle">Stable</text>
+            <!-- chart area -->
+            <rect x="100" y="96" width="186" height="90" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="193" y="110" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Conversations — last 7 days</text>
+            <polyline points="112,165 126,148 140,152 154,138 168,120 182,142 196,158 210,160" fill="none" stroke="#6366f1" stroke-width="2"/>
+            <polygon points="112,165 126,148 140,152 154,138 168,120 182,142 196,158 210,160 210,176 112,176" fill="rgba(99,102,241,0.08)"/>
+            <text x="112" y="180" font-size="5.5" fill="#94a3b8" font-family="Inter,sans-serif">Mon</text>
+            <text x="136" y="180" font-size="5.5" fill="#94a3b8" font-family="Inter,sans-serif">Tue</text>
+            <text x="160" y="180" font-size="5.5" fill="#94a3b8" font-family="Inter,sans-serif">Wed</text>
+            <text x="184" y="180" font-size="5.5" fill="#94a3b8" font-family="Inter,sans-serif">Fri</text>
+            <rect x="294" y="96" width="110" height="90" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="349" y="110" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Leads — last 7 days</text>
+            <rect x="302" y="158" width="10" height="18" rx="2" fill="#22c55e"/>
+            <rect x="316" y="148" width="10" height="28" rx="2" fill="#22c55e"/>
+            <rect x="330" y="153" width="10" height="23" rx="2" fill="#22c55e"/>
+            <rect x="344" y="138" width="10" height="38" rx="2" fill="#22c55e"/>
+            <rect x="358" y="128" width="10" height="48" rx="2" fill="#22c55e"/>
+            <rect x="372" y="153" width="10" height="23" rx="2" fill="#22c55e"/>
+            <rect x="386" y="160" width="10" height="16" rx="2" fill="#22c55e"/>
+            <!-- recent leads -->
+            <rect x="100" y="194" width="300" height="78" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="250" y="207" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Recent Leads</text>
+            <text x="110" y="218" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">NAME</text>
+            <text x="190" y="218" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">COMPANY</text>
+            <text x="260" y="218" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">INTEREST</text>
+            <text x="310" y="218" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">SCORE</text>
+            <text x="345" y="218" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">STATUS</text>
+            <text x="110" y="232" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Priya Sharma</text>
+            <text x="190" y="232" font-size="7" fill="#475569" font-family="Inter,sans-serif">TechCorp India</text>
+            <text x="260" y="232" font-size="7" fill="#475569" font-family="Inter,sans-serif">CRM Pro</text>
+            <text x="314" y="232" font-size="7" fill="#22c55e" font-family="Inter,sans-serif" font-weight="700">92</text>
+            <rect x="342" y="225" width="22" height="10" rx="3" fill="#fef2f2"/>
+            <text x="353" y="233" font-size="6" fill="#ef4444" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Hot</text>
+            <text x="110" y="248" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Rahul Mehta</text>
+            <text x="190" y="248" font-size="7" fill="#475569" font-family="Inter,sans-serif">StartupXYZ</text>
+            <text x="260" y="248" font-size="7" fill="#475569" font-family="Inter,sans-serif">Project Hub</text>
+            <text x="314" y="248" font-size="7" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">74</text>
+            <rect x="340" y="241" width="26" height="10" rx="3" fill="#fffbeb"/>
+            <text x="353" y="249" font-size="6" fill="#f59e0b" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Warm</text>
+            <text x="110" y="264" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Sarah Johnson</text>
+            <text x="190" y="264" font-size="7" fill="#475569" font-family="Inter,sans-serif">Global Inc</text>
+            <text x="260" y="264" font-size="7" fill="#475569" font-family="Inter,sans-serif">ERP Suite</text>
+            <text x="314" y="264" font-size="7" fill="#22c55e" font-family="Inter,sans-serif" font-weight="700">88</text>
+            <rect x="342" y="257" width="22" height="10" rx="3" fill="#fef2f2"/>
+            <text x="353" y="265" font-size="6" fill="#ef4444" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Hot</text>
+          </svg>
+        </div>
+        <div class="screenshot-label">Analytics Dashboard</div>
+        <div class="screenshot-sub">Real-time metrics & conversation insights</div>
+      </div>
+
+      <!-- Chatbot Preview -->
+      <div class="screenshot-card">
+        <div style="background:#f8f9fb;border-radius:12px 12px 0 0;overflow:hidden">
+          <svg viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <rect width="90" height="280" fill="#1a1f36"/>
+            <rect x="10" y="14" width="28" height="28" rx="7" fill="#6366f1"/>
+            <text x="44" y="33" font-size="9" fill="white" font-family="Inter,sans-serif" font-weight="600">Aria Platform</text>
+            <text x="22" y="72" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Dashboard</text>
+            <text x="22" y="90" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Knowledge Base</text>
+            <rect x="8" y="97" width="74" height="22" rx="5" fill="#2d3561"/>
+            <text x="22" y="112" font-size="8" fill="white" font-family="Inter,sans-serif" font-weight="600">Chatbot Preview</text>
+            <text x="22" y="131" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Leads CRM</text>
+            <text x="22" y="149" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Customizer</text>
+            <text x="18" y="262" font-size="6" fill="#64748b" font-family="Inter,sans-serif">WORKSPACE</text>
+            <circle cx="18" cy="272" r="7" fill="#6366f1"/>
+            <text x="28" y="270" font-size="7" fill="white" font-family="Inter,sans-serif" font-weight="600">Nexus Solutions</text>
+            <text x="28" y="278" font-size="6" fill="#64748b" font-family="Inter,sans-serif">admin@nexus.io</text>
+            <rect x="90" width="330" height="280" fill="white"/>
+            <text x="105" y="22" font-size="11" fill="#1e293b" font-family="Inter,sans-serif" font-weight="700">Chatbot Preview</text>
+            <text x="105" y="34" font-size="7" fill="#94a3b8" font-family="Inter,sans-serif">AI Customer Engagement Platform</text>
+            <!-- chat panel -->
+            <rect x="98" y="44" width="148" height="228" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <rect x="98" y="44" width="148" height="40" rx="8" fill="#6366f1"/>
+            <circle cx="120" cy="64" r="10" fill="rgba(255,255,255,0.2)"/>
+            <text x="120" y="68" font-size="8" fill="white" font-family="Inter,sans-serif" text-anchor="middle">✦</text>
+            <text x="172" y="60" font-size="9" fill="white" font-family="Inter,sans-serif" font-weight="700">Aria</text>
+            <circle cx="136" cy="72" r="3" fill="#22c55e"/>
+            <text x="142" y="74" font-size="6.5" fill="rgba(255,255,255,0.8)" font-family="Inter,sans-serif">Online · Powered by AI</text>
+            <rect x="116" y="100" width="112" height="32" rx="8" fill="#f1f5f9"/>
+            <text x="172" y="112" font-size="7" fill="#475569" font-family="Inter,sans-serif" text-anchor="middle">Hi! I'm Aria, your Nexus</text>
+            <text x="172" y="123" font-size="7" fill="#475569" font-family="Inter,sans-serif" text-anchor="middle">Solutions assistant. 👋</text>
+            <rect x="108" y="248" width="124" height="16" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="163" y="259" font-size="7" fill="#94a3b8" font-family="Inter,sans-serif" text-anchor="middle">Ask Aria anything...</text>
+            <!-- right panel -->
+            <rect x="254" y="44" width="162" height="228" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="335" y="66" font-size="8" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">💡 Try asking Aria</text>
+            <rect x="262" y="74" width="146" height="14" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+            <text x="270" y="84" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">"What products do you offer?"</text>
+            <rect x="262" y="92" width="146" height="14" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+            <text x="270" y="102" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">"How much does CRM Pro cost?"</text>
+            <rect x="262" y="110" width="146" height="14" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+            <text x="270" y="120" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">"Do you have a free trial?"</text>
+            <rect x="262" y="128" width="146" height="14" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+            <text x="270" y="138" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">"I'd like to book a demo"</text>
+            <rect x="262" y="166" width="146" height="44" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+            <text x="335" y="182" font-size="7.5" fill="#92400e" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">🔥 Lead Capture Active</text>
+            <text x="335" y="194" font-size="6" fill="#92400e" font-family="Inter,sans-serif" text-anchor="middle">Detects intent, auto-captures</text>
+            <text x="335" y="203" font-size="6" fill="#92400e" font-family="Inter,sans-serif" text-anchor="middle">leads into your CRM.</text>
+            <rect x="262" y="216" width="146" height="44" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+            <text x="335" y="232" font-size="7.5" fill="#166534" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">🌐 Multilingual Support</text>
+            <text x="335" y="244" font-size="6" fill="#166534" font-family="Inter,sans-serif" text-anchor="middle">Responds in English, Hindi,</text>
+            <text x="335" y="253" font-size="6" fill="#166534" font-family="Inter,sans-serif" text-anchor="middle">Spanish, French &amp; 50+ others.</text>
+          </svg>
+        </div>
+        <div class="screenshot-label">AI Chat Interface</div>
+        <div class="screenshot-sub">Intelligent multilingual conversations</div>
+      </div>
+
+      <!-- Knowledge Base -->
+      <div class="screenshot-card">
+        <div style="background:#f8f9fb;border-radius:12px 12px 0 0;overflow:hidden">
+          <svg viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <rect width="90" height="280" fill="#1a1f36"/>
+            <rect x="10" y="14" width="28" height="28" rx="7" fill="#6366f1"/>
+            <text x="44" y="33" font-size="9" fill="white" font-family="Inter,sans-serif" font-weight="600">Aria Platform</text>
+            <text x="22" y="72" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Dashboard</text>
+            <rect x="8" y="78" width="74" height="22" rx="5" fill="#2d3561"/>
+            <text x="22" y="93" font-size="8" fill="white" font-family="Inter,sans-serif" font-weight="600">Knowledge Base</text>
+            <text x="22" y="113" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Chatbot Preview</text>
+            <text x="22" y="131" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Leads CRM</text>
+            <text x="22" y="149" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Customizer</text>
+            <text x="18" y="262" font-size="6" fill="#64748b" font-family="Inter,sans-serif">WORKSPACE</text>
+            <circle cx="18" cy="272" r="7" fill="#6366f1"/>
+            <text x="28" y="270" font-size="7" fill="white" font-family="Inter,sans-serif" font-weight="600">Nexus Solutions</text>
+            <text x="28" y="278" font-size="6" fill="#64748b" font-family="Inter,sans-serif">admin@nexus.io</text>
+            <rect x="90" width="330" height="280" fill="white"/>
+            <text x="105" y="22" font-size="11" fill="#1e293b" font-family="Inter,sans-serif" font-weight="700">Knowledge Base</text>
+            <text x="105" y="34" font-size="7" fill="#94a3b8" font-family="Inter,sans-serif">AI Customer Engagement Platform</text>
+            <!-- upload box -->
+            <rect x="98" y="44" width="148" height="86" rx="8" fill="white" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="4,3"/>
+            <rect x="158" y="58" width="28" height="28" rx="8" fill="#ede9fe"/>
+            <text x="172" y="78" font-size="14" fill="#6366f1" font-family="Inter,sans-serif" text-anchor="middle">↑</text>
+            <text x="172" y="102" font-size="8" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Upload Documents</text>
+            <text x="172" y="114" font-size="6.5" fill="#94a3b8" font-family="Inter,sans-serif" text-anchor="middle">PDF, DOCX, XLSX, TXT</text>
+            <text x="172" y="124" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif" text-anchor="middle">Drag &amp; drop or click to browse</text>
+            <!-- crawl box -->
+            <rect x="254" y="44" width="162" height="86" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="268" y="62" font-size="9" fill="#1e293b" font-family="Inter,sans-serif" font-weight="700">🌐 Crawl a URL</text>
+            <text x="268" y="74" font-size="6.5" fill="#94a3b8" font-family="Inter,sans-serif">Add any webpage to your knowledge</text>
+            <text x="268" y="83" font-size="6.5" fill="#94a3b8" font-family="Inter,sans-serif">base. AI extracts &amp; indexes content.</text>
+            <rect x="262" y="92" width="110" height="16" rx="4" fill="#1e293b"/>
+            <text x="270" y="103" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">https://yoursite.com/faq</text>
+            <rect x="376" y="92" width="32" height="16" rx="4" fill="#6366f1"/>
+            <text x="392" y="103" font-size="7" fill="white" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">Add</text>
+            <!-- sources list -->
+            <rect x="98" y="140" width="318" height="132" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="112" y="157" font-size="8" fill="#1e293b" font-family="Inter,sans-serif" font-weight="700">Knowledge Sources (4)</text>
+            <rect x="330" y="148" width="74" height="14" rx="7" fill="#dcfce7"/>
+            <text x="367" y="158" font-size="6.5" fill="#166534" font-family="Inter,sans-serif" font-weight="600" text-anchor="middle">✓ RAG Active</text>
+            <!-- file rows -->
+            <rect x="108" y="164" width="14" height="16" rx="2" fill="#fee2e2"/>
+            <text x="115" y="176" font-size="8" fill="#ef4444" font-family="Inter,sans-serif" text-anchor="middle">▭</text>
+            <text x="130" y="172" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Product Catalog 2026.pdf</text>
+            <text x="130" y="181" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">PDF · 2.4 MB · Added 2026-05-20</text>
+            <rect x="358" y="165" width="44" height="12" rx="6" fill="#dcfce7"/>
+            <text x="380" y="174" font-size="6" fill="#166534" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">✓ Indexed</text>
+            <line x1="108" y1="191" x2="402" y2="191" stroke="#f1f5f9" stroke-width="1"/>
+            <rect x="108" y="194" width="14" height="16" rx="2" fill="#fee2e2"/>
+            <text x="115" y="206" font-size="8" fill="#ef4444" font-family="Inter,sans-serif" text-anchor="middle">▭</text>
+            <text x="130" y="202" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Pricing &amp; Plans.pdf</text>
+            <text x="130" y="211" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">PDF · 0.8 MB · Added 2026-05-18</text>
+            <rect x="358" y="195" width="44" height="12" rx="6" fill="#dcfce7"/>
+            <text x="380" y="204" font-size="6" fill="#166534" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">✓ Indexed</text>
+            <line x1="108" y1="221" x2="402" y2="221" stroke="#f1f5f9" stroke-width="1"/>
+            <rect x="108" y="224" width="14" height="16" rx="2" fill="#dcfce7"/>
+            <text x="115" y="236" font-size="8" fill="#22c55e" font-family="Inter,sans-serif" text-anchor="middle">▭</text>
+            <text x="130" y="232" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">FAQ Document.docx</text>
+            <text x="130" y="241" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">DOC · 1.1 MB · Added 2026-05-15</text>
+            <rect x="358" y="225" width="44" height="12" rx="6" fill="#dcfce7"/>
+            <text x="380" y="234" font-size="6" fill="#166534" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">✓ Indexed</text>
+            <line x1="108" y1="251" x2="402" y2="251" stroke="#f1f5f9" stroke-width="1"/>
+            <circle cx="115" cy="261" r="7" fill="#eff6ff"/>
+            <text x="115" y="265" font-size="8" fill="#3b82f6" font-family="Inter,sans-serif" text-anchor="middle">🌐</text>
+            <text x="130" y="260" font-size="7" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">nexussolutions.com/about</text>
+            <text x="130" y="269" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">URL · Added 2026-05-12</text>
+            <rect x="358" y="255" width="44" height="12" rx="6" fill="#dcfce7"/>
+            <text x="380" y="264" font-size="6" fill="#166534" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">✓ Indexed</text>
+          </svg>
+        </div>
+        <div class="screenshot-label">Knowledge Base</div>
+        <div class="screenshot-sub">Upload docs & crawl URLs for AI knowledge</div>
+      </div>
+
+      <!-- Leads CRM -->
+      <div class="screenshot-card">
+        <div style="background:#f8f9fb;border-radius:12px 12px 0 0;overflow:hidden">
+          <svg viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+            <rect width="90" height="280" fill="#1a1f36"/>
+            <rect x="10" y="14" width="28" height="28" rx="7" fill="#6366f1"/>
+            <text x="44" y="33" font-size="9" fill="white" font-family="Inter,sans-serif" font-weight="600">Aria Platform</text>
+            <text x="22" y="72" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Dashboard</text>
+            <text x="22" y="90" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Knowledge Base</text>
+            <text x="22" y="108" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Chatbot Preview</text>
+            <rect x="8" y="115" width="74" height="22" rx="5" fill="#2d3561"/>
+            <text x="22" y="130" font-size="8" fill="white" font-family="Inter,sans-serif" font-weight="600">Leads CRM</text>
+            <text x="22" y="149" font-size="8" fill="#94a3b8" font-family="Inter,sans-serif">Customizer</text>
+            <text x="18" y="262" font-size="6" fill="#64748b" font-family="Inter,sans-serif">WORKSPACE</text>
+            <circle cx="18" cy="272" r="7" fill="#6366f1"/>
+            <text x="28" y="270" font-size="7" fill="white" font-family="Inter,sans-serif" font-weight="600">Nexus Solutions</text>
+            <text x="28" y="278" font-size="6" fill="#64748b" font-family="Inter,sans-serif">admin@nexus.io</text>
+            <rect x="90" width="330" height="280" fill="white"/>
+            <text x="105" y="22" font-size="11" fill="#1e293b" font-family="Inter,sans-serif" font-weight="700">Leads CRM</text>
+            <text x="105" y="34" font-size="7" fill="#94a3b8" font-family="Inter,sans-serif">AI Customer Engagement Platform</text>
+            <!-- stat cards -->
+            <rect x="98" y="42" width="68" height="36" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="132" y="60" font-size="16" fill="#6366f1" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">5</text>
+            <text x="132" y="72" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Total Leads</text>
+            <rect x="174" y="42" width="68" height="36" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="208" y="60" font-size="16" fill="#ef4444" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">2</text>
+            <text x="208" y="72" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Hot Leads 🔥</text>
+            <rect x="250" y="42" width="68" height="36" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="284" y="60" font-size="16" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">2</text>
+            <text x="284" y="72" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Warm Leads</text>
+            <rect x="326" y="42" width="68" height="36" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="360" y="60" font-size="16" fill="#3b82f6" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">1</text>
+            <text x="360" y="72" font-size="6" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">Cold Leads</text>
+            <!-- table -->
+            <rect x="98" y="86" width="316" height="186" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <!-- search + filters -->
+            <rect x="106" y="94" width="184" height="14" rx="7" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="116" y="104" font-size="6.5" fill="#94a3b8" font-family="Inter,sans-serif">Search leads...</text>
+            <rect x="296" y="93" width="24" height="16" rx="4" fill="white" stroke="#6366f1" stroke-width="1.5"/>
+            <text x="308" y="104" font-size="7" fill="#6366f1" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">All</text>
+            <rect x="324" y="93" width="22" height="16" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="335" y="104" font-size="7" fill="#475569" font-family="Inter,sans-serif" text-anchor="middle">Hot</text>
+            <rect x="350" y="93" width="28" height="16" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="364" y="104" font-size="7" fill="#475569" font-family="Inter,sans-serif" text-anchor="middle">Warm</text>
+            <rect x="382" y="93" width="24" height="16" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+            <text x="394" y="104" font-size="7" fill="#475569" font-family="Inter,sans-serif" text-anchor="middle">Cold</text>
+            <!-- headers -->
+            <text x="110" y="122" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">NAME</text>
+            <text x="175" y="122" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">EMAIL</text>
+            <text x="248" y="122" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">COMPANY</text>
+            <text x="300" y="122" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">SCORE</text>
+            <text x="328" y="122" font-size="6" fill="#94a3b8" font-family="Inter,sans-serif">STATUS</text>
+            <line x1="106" y1="126" x2="406" y2="126" stroke="#f1f5f9" stroke-width="1"/>
+            <!-- rows -->
+            <text x="110" y="139" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Priya Sharma</text>
+            <text x="175" y="139" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">priya@techcorp.in</text>
+            <text x="248" y="139" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">TechCorp India</text>
+            <rect x="296" y="133" width="20" height="8" rx="2" fill="#22c55e" opacity="0.8"/>
+            <text x="318" y="140" font-size="7" fill="#22c55e" font-family="Inter,sans-serif" font-weight="700"> 92</text>
+            <rect x="326" y="133" width="22" height="10" rx="3" fill="#fef2f2"/>
+            <text x="337" y="141" font-size="6" fill="#ef4444" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Hot</text>
+            <line x1="106" y1="148" x2="406" y2="148" stroke="#f1f5f9" stroke-width="1"/>
+            <text x="110" y="161" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Rahul Mehta</text>
+            <text x="175" y="161" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">rahul@startupxyz.com</text>
+            <text x="248" y="161" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">StartupXYZ</text>
+            <rect x="296" y="155" width="14" height="8" rx="2" fill="#f59e0b" opacity="0.8"/>
+            <text x="318" y="162" font-size="7" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700"> 74</text>
+            <rect x="324" y="155" width="26" height="10" rx="3" fill="#fffbeb"/>
+            <text x="337" y="163" font-size="6" fill="#f59e0b" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Warm</text>
+            <line x1="106" y1="170" x2="406" y2="170" stroke="#f1f5f9" stroke-width="1"/>
+            <text x="110" y="183" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Sarah Johnson</text>
+            <text x="175" y="183" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">sarah@globalinc.com</text>
+            <text x="248" y="183" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">Global Inc</text>
+            <rect x="296" y="177" width="20" height="8" rx="2" fill="#22c55e" opacity="0.8"/>
+            <text x="318" y="184" font-size="7" fill="#22c55e" font-family="Inter,sans-serif" font-weight="700"> 88</text>
+            <rect x="326" y="177" width="22" height="10" rx="3" fill="#fef2f2"/>
+            <text x="337" y="185" font-size="6" fill="#ef4444" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Hot</text>
+            <line x1="106" y1="192" x2="406" y2="192" stroke="#f1f5f9" stroke-width="1"/>
+            <text x="110" y="205" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Amit Kumar</text>
+            <text x="175" y="205" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">amit@ventures.io</text>
+            <text x="248" y="205" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">Ventures.io</text>
+            <rect x="296" y="199" width="14" height="8" rx="2" fill="#f59e0b" opacity="0.8"/>
+            <text x="318" y="206" font-size="7" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700"> 61</text>
+            <rect x="324" y="199" width="26" height="10" rx="3" fill="#fffbeb"/>
+            <text x="337" y="207" font-size="6" fill="#f59e0b" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Warm</text>
+            <line x1="106" y1="214" x2="406" y2="214" stroke="#f1f5f9" stroke-width="1"/>
+            <text x="110" y="227" font-size="7.5" fill="#1e293b" font-family="Inter,sans-serif" font-weight="600">Li Wei</text>
+            <text x="175" y="227" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">li.wei@chinaops.com</text>
+            <text x="248" y="227" font-size="6.5" fill="#475569" font-family="Inter,sans-serif">ChinaOps Ltd</text>
+            <rect x="296" y="221" width="10" height="8" rx="2" fill="#ef4444" opacity="0.8"/>
+            <text x="318" y="228" font-size="7" fill="#ef4444" font-family="Inter,sans-serif" font-weight="700"> 45</text>
+            <rect x="326" y="221" width="22" height="10" rx="3" fill="#eff6ff"/>
+            <text x="337" y="229" font-size="6" fill="#3b82f6" font-family="Inter,sans-serif" text-anchor="middle" font-weight="600">Cold</text>
+          </svg>
+        </div>
+        <div class="screenshot-label">Lead CRM</div>
+        <div class="screenshot-sub">Track, score and manage every lead</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section id="casestudy">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:0">
+      <div class="section-tag">Case Study</div>
+      <h2 class="section-title">NeuralVerse Engage</h2>
+      <p class="section-sub">How we solved a real business problem with AI.</p>
+    </div>
+    <div class="case-inner reveal">
+      <div class="case-grid">
+        <div class="case-block">
+          <h4>🔴 Problem</h4>
+          <p>Businesses lose leads because website visitors don't get instant responses. Delayed replies mean lost revenue and poor customer experience.</p>
+        </div>
+        <div class="case-block">
+          <h4>🔵 Solution</h4>
+          <p>Built an AI-powered customer engagement platform featuring chat assistance, lead capture, CRM integration, analytics, and knowledge management — all in one system.</p>
+        </div>
+        <div class="case-block">
+          <h4>🟢 Impact</h4>
+          <div class="case-impact">
+            <div class="impact-item">Instant customer responses</div>
+            <div class="impact-item">Automated lead collection</div>
+            <div class="impact-item">Centralised lead management</div>
+            <div class="impact-item">Improved customer engagement</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section id="solutions" style="background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-tag">What We Build</div>
+      <h2 class="section-title">Solutions</h2>
+      <p class="section-sub">Ready-to-deploy AI systems tailored for real business challenges.</p>
+    </div>
+    <div class="solutions-grid reveal">
+      <div class="sol-card">
+        <div class="sol-num">01</div>
+        <h3>AI Customer Engagement Platform</h3>
+        <p>Business chatbot + CRM + analytics ecosystem for complete customer lifecycle management.</p>
+        <div class="sol-tags"><span class="sol-tag">Chatbot</span><span class="sol-tag">CRM</span><span class="sol-tag">Analytics</span></div>
+      </div>
+      <div class="sol-card">
+        <div class="sol-num">02</div>
+        <h3>AI Appointment & Booking Assistant</h3>
+        <p>Smart scheduling with automated reminders and customer management.</p>
+        <div class="sol-tags"><span class="sol-tag">Scheduling</span><span class="sol-tag">Reminders</span><span class="sol-tag">Customer Mgmt</span></div>
+        <div class="sol-industries"><span class="ind-tag-sm">Clinics</span><span class="ind-tag-sm">Salons</span><span class="ind-tag-sm">Coaching</span><span class="ind-tag-sm">Consultants</span></div>
+      </div>
+      <div class="sol-card">
+        <div class="sol-num">03</div>
+        <h3>AI Lead Generation System</h3>
+        <p>End-to-end lead pipeline from capture to automated follow-up with full analytics.</p>
+        <div class="sol-tags"><span class="sol-tag">Lead Capture</span><span class="sol-tag">Qualification</span><span class="sol-tag">Follow-Up</span><span class="sol-tag">Analytics</span></div>
+      </div>
+      <div class="sol-card">
+        <div class="sol-num">04</div>
+        <h3>AI Knowledge Assistant</h3>
+        <p>Intelligent document search and internal knowledge base for team productivity.</p>
+        <div class="sol-tags"><span class="sol-tag">Doc Search</span><span class="sol-tag">Knowledge Base</span><span class="sol-tag">Team AI</span></div>
+      </div>
+    </div>
+
+    <!-- COMING SOON -->
+    <div class="text-center reveal" style="margin-top:3rem;margin-bottom:1.5rem">
+      <div class="section-tag">Coming Soon</div>
+      <h3 style="font-size:1.2rem;font-weight:600">Future Products</h3>
+    </div>
+    <div class="coming-grid reveal">
+      <div class="coming-card">
+        <div class="coming-badge">Coming Soon</div>
+        <div style="font-size:1.5rem;margin-bottom:.6rem">📊</div>
+        <h3>NeuralVerse Insights</h3>
+        <p>AI Analytics Platform</p>
+      </div>
+      <div class="coming-card">
+        <div class="coming-badge">Coming Soon</div>
+        <div style="font-size:1.5rem;margin-bottom:.6rem">⚙️</div>
+        <h3>NeuralVerse Automate</h3>
+        <p>Business Workflow Automation</p>
+      </div>
+      <div class="coming-card">
+        <div class="coming-badge">Coming Soon</div>
+        <div style="font-size:1.5rem;margin-bottom:.6rem">🧠</div>
+        <h3>NeuralVerse Knowledge</h3>
+        <p>AI Knowledge Management System</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section>
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-tag">Who We Serve</div>
+      <h2 class="section-title">Industries We Serve</h2>
+      <p class="section-sub">Tailored AI solutions for the sectors where intelligent automation creates the most impact.</p>
+    </div>
+    <div class="industries-grid reveal">
+      <div class="ind-card"><span class="emoji">🎓</span><span>Coaching Institutes</span></div>
+      <div class="ind-card"><span class="emoji">🏥</span><span>Healthcare & Clinics</span></div>
+      <div class="ind-card"><span class="emoji">🏢</span><span>Real Estate</span></div>
+      <div class="ind-card"><span class="emoji">🍽️</span><span>Restaurants</span></div>
+      <div class="ind-card"><span class="emoji">🚀</span><span>Startups</span></div>
+      <div class="ind-card"><span class="emoji">💼</span><span>Small & Medium Businesses</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why" style="background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-tag">Why Choose Us</div>
+      <h2 class="section-title">Why NeuralVerse Labs</h2>
+      <p class="section-sub">What makes us different from off-the-shelf AI tools and generic agencies.</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card"><div class="why-num">01</div><h3>Business-First Approach</h3><p>We focus on outcomes, not just technology. Every solution starts with your business goals.</p></div>
+      <div class="why-card"><div class="why-num">02</div><h3>Custom Solutions</h3><p>Every solution is tailored to the client's specific needs, industry, and workflow.</p></div>
+      <div class="why-card"><div class="why-num">03</div><h3>End-to-End Delivery</h3><p>From strategy and development to deployment and ongoing support — we handle it all.</p></div>
+      <div class="why-card"><div class="why-num">04</div><h3>Scalable Architecture</h3><p>Systems built to grow alongside your business — no rip-and-replace down the road.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-tag">How We Build</div>
+      <h2 class="section-title">Technologies We Use</h2>
+      <p class="section-sub">Modern, production-grade tools powering every solution we deliver.</p>
+    </div>
+    <div class="tech-grid reveal">
+      <div class="tech-card">
+        <div class="tech-card-icon">🎨</div>
+        <h3>Frontend</h3>
+        <div class="tech-chips"><span class="tech-chip">React</span><span class="tech-chip">Next.js</span><span class="tech-chip">Tailwind</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">⚙️</div>
+        <h3>Backend</h3>
+        <div class="tech-chips"><span class="tech-chip">Python</span><span class="tech-chip">FastAPI</span><span class="tech-chip">Node.js</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">🤖</div>
+        <h3>AI</h3>
+        <div class="tech-chips"><span class="tech-chip">OpenAI</span><span class="tech-chip">Gemini</span><span class="tech-chip">LangChain</span></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">🗄️</div>
+        <h3>Database</h3>
+        <div class="tech-chips"><span class="tech-chip">Supabase</span><span class="tech-chip">PostgreSQL</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" style="background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:2.5rem">
+      <div class="section-tag">The Team</div>
+      <h2 class="section-title">Leadership Team</h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto">The people driving vision, strategy, and execution at NeuralVerse Labs.</p>
+    </div>
+    <div class="team-grid reveal">
+      <div class="founder-card">
+        <div class="fc-top">
+          <div class="fc-avatar" style="background:var(--grad);padding:0;overflow:hidden">
+            <img src="https://i.ibb.co/RktXvk9n/Whats-App-Image-2026-05-30-at-14-17-17.jpg" onerror="this.style.display='none';this.parentNode.innerHTML='AY'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>
+          </div>
+          <div>
+            <div class="fc-name">Abhinav Yadav</div>
+            <div class="fc-role">Founder & CEO</div>
+          </div>
+        </div>
+        <p class="fc-bio">Leads the vision, strategy, and innovation at NeuralVerse Labs. Specializes in AI systems, intelligent automation, and custom software development, helping businesses transform operations through cutting-edge technology.</p>
+        <div class="fc-expertise">
+          <h4>Core Expertise</h4>
+          <div class="expertise-chips">
+            <span class="exp-chip">AI Engineering</span>
+            <span class="exp-chip">Automation Systems</span>
+            <span class="exp-chip">Product Development</span>
+            <span class="exp-chip">Software Architecture</span>
+            <span class="exp-chip">Business Intelligence</span>
+          </div>
+        </div>
+      </div>
+      <div class="founder-card">
+        <div class="fc-top">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#22d3ee,#6366f1);padding:0;overflow:hidden">
+            <img src="https://i.ibb.co/PsGjKLBM/Whats-App-Image-2026-05-30-at-14-09-39.jpg" onerror="this.style.display='none';this.parentNode.innerHTML='GG'" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>
+          </div>
+          <div>
+            <div class="fc-name">Gati Goyal</div>
+            <div class="fc-role">Co-Founder & COO</div>
+          </div>
+        </div>
+        <p class="fc-bio">Leads business operations, project delivery, and strategic growth initiatives at NeuralVerse Labs. Focused on building strong client relationships, optimizing workflows, and ensuring successful execution of AI-powered solutions.</p>
+        <div class="fc-expertise">
+          <h4>Core Expertise</h4>
+          <div class="expertise-chips">
+            <span class="exp-chip">Operations Management</span>
+            <span class="exp-chip">Business Development</span>
+            <span class="exp-chip">Client Success</span>
+            <span class="exp-chip">Strategic Planning</span>
+            <span class="exp-chip">Process Optimization</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-tag">How We Work</div>
+      <h2 class="section-title">Our Process</h2>
+      <p class="section-sub">A structured, transparent approach from first conversation to live deployment.</p>
+    </div>
+    <div class="process-track reveal">
+      <div class="proc-step"><div class="proc-circle">1</div><div class="proc-title">Discovery</div><div class="proc-desc">Understand business requirements</div></div>
+      <div class="proc-step"><div class="proc-circle">2</div><div class="proc-title">Strategy</div><div class="proc-desc">Design the AI solution</div></div>
+      <div class="proc-step"><div class="proc-circle">3</div><div class="proc-title">Development</div><div class="proc-desc">Build and integrate the system</div></div>
+      <div class="proc-step"><div class="proc-circle">4</div><div class="proc-title">Deployment</div><div class="proc-desc">Launch in production</div></div>
+      <div class="proc-step"><div class="proc-circle">5</div><div class="proc-title">Optimization</div><div class="proc-desc">Monitor and improve performance</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:2.5rem">
+      <div class="section-tag">Get In Touch</div>
+      <h2 class="section-title">Let's Build Smarter Businesses with AI</h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto">Ready to automate, grow, and scale? Let's talk about what AI can do for your business.</p>
+    </div>
+    <div class="contact-wrapper reveal">
+      <div class="contact-info">
+        <div class="ci-item">
+          <div class="ci-icon">📧</div>
+          <div><div class="ci-label">Email</div><div class="ci-value"><a href="mailto:neuralverselabs@gmail.com">neuralverselabs@gmail.com</a></div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">💼</div>
+          <div><div class="ci-label">LinkedIn</div><div class="ci-value"><a href="https://linkedin.com/company/neuralverselabs" target="_blank">NeuralVerse Labs</a></div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">👤</div>
+          <div><div class="ci-label">Founder</div><div class="ci-value"><a href="https://linkedin.com/in/abhinavyadav" target="_blank">Abhinav Yadav</a></div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">📍</div>
+          <div><div class="ci-label">Location</div><div class="ci-value">India</div></div>
+        </div>
+      </div>
+      <div class="contact-ctas">
+        <h3>Ready to Get Started?</h3>
+        <p>Book a free consultation or request a live demo of any of our solutions.</p>
+        <button class="btn-primary" style="width:100%">Schedule a Consultation</button>
+        <button class="btn-outline" style="width:100%">Request a Demo</button>
+        <button class="btn-outline" style="width:100%">Contact NeuralVerse Labs</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">NeuralVerse Labs</div>
+    <div class="footer-socials">
+      <a class="social-btn" href="https://linkedin.com/company/neuralverselabs" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a class="social-btn" href="https://github.com/neuralverselabs" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="social-btn" href="https://instagram.com/neuralverselabs" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram
+      </a>
+    </div>
+    <div class="footer-copy">© 2025 NeuralVerse Labs · AI Solutions · Automation · Intelligent Software · Built by Abhinav Yadav</div>
+  </div>
+</footer>
+
+<script>
+const els=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})},{threshold:0.08});
+els.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
